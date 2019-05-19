@@ -85,5 +85,34 @@ function createFeatures(earthquakeData) {
     L.control.layers(baseMaps, overlayMaps, {
       collapsed: false
     }).addTo(myMap);
+
+    function getColor(d) {
+      return d > 5  ? 'black' :
+             d > 4.5  ? 'black' :
+             d > 2.5   ? 'red' :
+             d > 1   ? 'orange' :
+             d > 0   ? 'green' :
+                        '#FFEDA0';
+    }
+
+    var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (myMap) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 1, 2.5, 4.5, 5],
+        labels = [];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+
+      return div;
+    };
+
+    legend.addTo(myMap);
   
   }
