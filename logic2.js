@@ -37,7 +37,7 @@ function createFeatures(earthquakeData) {
 
         return new L.circle(latlng,
           {    
-          fillOpacity: 0.75,
+          fillOpacity: 0.5,
           color: magcolor,
           fillColor: "white",
           radius: feature.properties.mag * 35000
@@ -59,10 +59,26 @@ function createFeatures(earthquakeData) {
       id: "mapbox.streets",
       accessToken: API_KEY
     });
+
+    var grayscale = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+      attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+      maxZoom: 18,
+      id: "mapbox.light",
+      accessToken: API_KEY
+    });
+
+    var satellite = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+      attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+      maxZoom: 18,
+      id: "mapbox.satellite",
+      accessToken: API_KEY
+    });
   
     // Define a baseMaps object to hold our base layers
     var baseMaps = {
       "Street Map": streetmap,
+      "Gray Scale": grayscale,
+      "Satellite": satellite
     };
     
     // Create overlay object to hold our overlay layer
