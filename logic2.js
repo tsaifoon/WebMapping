@@ -1,5 +1,5 @@
 //link
-var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson";
+var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
 
 // Perform a GET request to the query URL
 d3.json(queryUrl, function(data) {
@@ -21,12 +21,26 @@ function createFeatures(earthquakeData) {
     // Run the onEachFeature function once for each piece of data in the array
     var earthquakes = L.geoJSON(earthquakeData, {
       pointToLayer: function(feature,latlng){
-        return new L.Circle(latlng,
+
+        if(feature.properties.mag < 1){
+          magcolor = "green"
+        }
+        else if(feature.properties.mag >= 1 && feature.properties.mag < 2.5){
+          magcolor = "orange"
+        }
+        else if(feature.properties.mag >= 2.5 && feature.properties.mag <4.5){
+          magcolor = "red"
+        }
+        else if(feature.properties.mag >= 4.5){
+          magcolor = "black"
+        }
+
+        return new L.circle(latlng,
           {    
           fillOpacity: 0.75,
-          color: "white",
-          fillColor: "blue",
-          radius: feature.properties.mag * 100
+          color: magcolor,
+          fillColor: "white",
+          radius: feature.properties.mag * 35000
           });
         },
       onEachFeature: onEachFeature
